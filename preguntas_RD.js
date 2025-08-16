@@ -1,0 +1,85 @@
+const preguntasRD = [
+  // Historia
+  { p:"¿En qué año se proclamó la independencia de la República Dominicana?", o:["1844","1865","1821","1924"], r:"1844"},
+  { p:"¿Quién fue el principal líder de la independencia dominicana?", o:["Juan Pablo Duarte","Gregorio Luperón","Francisco del Rosario Sánchez","Matías Ramón Mella"], r:"Juan Pablo Duarte"},
+  { p:"¿En qué año se produjo la Guerra de la Restauración?", o:["1863","1844","1871","1856"], r:"1863"},
+  { p:"¿Quién fue presidente de RD durante gran parte de la dictadura de 1930-1961?", o:["Rafael Leónidas Trujillo","Joaquín Balaguer","Héctor Bienvenido Trujillo","Juan Bosch"], r:"Rafael Leónidas Trujillo"},
+  { p:"¿En qué año terminó la primera ocupación estadounidense en RD?", o:["1924","1916","1930","1945"], r:"1924"},
+  { p:"¿Qué batalla selló la victoria de la independencia en 1844?", o:["Batalla de Santiago","Batalla del 19 de Marzo","Batalla de la Canela","Batalla de Azua"], r:"Batalla del 19 de Marzo"},
+  { p:"¿Quién fue Gregorio Luperón?", o:["Líder militar de la Restauración","Presidente de Haití","Escritor dominicano","Artista plástico"], r:"Líder militar de la Restauración"},
+  { p:"¿Qué tratado puso fin a la anexión a España en el siglo XIX?", o:["Tratado de París","Tratado de Basilea","No hubo tratado formal","Tratado de Aranjuez"], r:"No hubo tratado formal"},
+  { p:"¿Qué grupo fundó Juan Pablo Duarte para luchar por la independencia?", o:["La Trinitaria","La Restauración","La Logia Masónica","El Comité Patriótico"], r:"La Trinitaria"},
+  { p:"¿Quién fue presidente cuando se firmó la Constitución de 1966?", o:["Joaquín Balaguer","Antonio Guzmán","Juan Bosch","Salvador Jorge Blanco"], r:"Joaquín Balaguer"},
+
+  // Geografía
+  { p:"¿Cuál es el pico más alto de la República Dominicana?", o:["Pico Duarte","Loma La Pelona","Pico Yaque","Monte Cristi"], r:"Pico Duarte"},
+  { p:"¿Cuál es el lago más grande del país?", o:["Lago Enriquillo","Laguna de Oviedo","Lago Azua","Lago Hatillo"], r:"Lago Enriquillo"},
+  { p:"¿Dónde se encuentra el Parque Nacional Los Haitises?", o:["Samaná","Puerto Plata","Barahona","La Vega"], r:"Samaná"},
+  { p:"¿Qué río es el más largo de la República Dominicana?", o:["Río Yaque del Norte","Río Ozama","Río Artibonito","Río Haina"], r:"Río Yaque del Norte"},
+  { p:"¿En qué provincia está la Laguna de Oviedo?", o:["Pedernales","Barahona","Independencia","Monte Cristi"], r:"Pedernales"},
+  { p:"¿Qué provincia es conocida como 'La Novia del Atlántico'?", o:["Puerto Plata","Samaná","La Romana","San Pedro de Macorís"], r:"Puerto Plata"},
+  { p:"¿Cuál es la capital de la provincia La Altagracia?", o:["Higüey","Punta Cana","La Romana","Bávaro"], r:"Higüey"},
+  { p:"¿En qué región está Constanza?", o:["Región Central (Cordillera Central)","Región Norte","Región Este","Región Sur"], r:"Región Central (Cordillera Central)"},
+  { p:"¿Cuál es el parque nacional más grande de RD?", o:["Jaragua","Los Haitises","Valle Nuevo","Isla Cabritos"], r:"Jaragua"},
+  { p:"¿Qué provincia es famosa por la producción de cacao fino?", o:["Sánchez Ramírez","El Seibo","Hato Mayor","San Francisco de Macorís"], r:"San Francisco de Macorís"},
+
+  // Cultura y costumbres
+  { p:"¿Cuál es el baile nacional de la República Dominicana?", o:["Merengue","Bachata","Mangulina","Son"], r:"Merengue"},
+  { p:"¿Qué bebida típica combina ron, miel y hierbas?", o:["Mamajuana","Guarapo","Ponche","Cerveza Presidente"], r:"Mamajuana"},
+  { p:"¿Qué plato típico combina arroz, habichuelas y carne?", o:["La Bandera","Sancocho","Mangú","Yaniqueque"], r:"La Bandera"},
+  { p:"¿Qué fiesta se celebra el 27 de febrero?", o:["Día de la Independencia","Día de la Restauración","Día de Duarte","Carnaval"], r:"Día de la Independencia"},
+  { p:"¿Cuál es un plato típico de desayuno?", o:["Mangú con los tres golpes","Pastel en hoja","Habichuelas con dulce","Tostones con salami"], r:"Mangú con los tres golpes"},
+  { p:"¿En qué ciudad se celebra el carnaval de los 'diablos cojuelos'?", o:["La Vega","Santo Domingo","San Juan","Baní"], r:"La Vega"},
+  { p:"¿Qué fruta tropical es muy cultivada en Baní?", o:["Mango","Piña","Coco","Lechosa"], r:"Mango"},
+  { p:"¿Qué dulce se prepara en Semana Santa?", o:["Habichuelas con dulce","Dulce de coco","Arroz con leche","Majarete"], r:"Habichuelas con dulce"},
+  { p:"¿Qué instrumento musical es típico del merengue?", o:["Acordeón","Bongó","Trompeta","Violín"], r:"Acordeón"},
+  { p:"¿Qué género musical dominicano es Patrimonio Inmaterial de la Humanidad?", o:["Bachata","Merengue","Mangulina","Son"], r:"Merengue"},
+
+  // Economía y sociedad
+  { p:"¿Cuál es el principal producto de exportación agrícola de RD?", o:["Azúcar","Cacao","Café","Banano"], r:"Cacao"},
+  { p:"¿Qué zona es famosa por su turismo de sol y playa?", o:["Punta Cana","Constanza","Jarabacoa","Bonao"], r:"Punta Cana"},
+  { p:"¿Qué recurso natural se extrae en Pueblo Viejo (Cotuí)?", o:["Oro","Petróleo","Hierro","Sal"], r:"Oro"},
+  { p:"¿Cuál es el deporte más popular en RD?", o:["Béisbol","Fútbol","Baloncesto","Voleibol"], r:"Béisbol"},
+  { p:"¿Qué empresa produce la cerveza más famosa de RD?", o:["Cervecería Nacional Dominicana","Presidente S.A.","Brahma Dominicana","Industria Licorera"], r:"Cervecería Nacional Dominicana"},
+  { p:"¿Qué provincia se destaca por su producción de sal?", o:["Barahona","Monte Cristi","Azua","Pedernales"], r:"Monte Cristi"},
+  { p:"¿Qué fruta es símbolo de exportación en Samaná?", o:["Coco","Piña","Mango","Papaya"], r:"Coco"},
+  { p:"¿Qué color está en la bandera dominicana pero no en la de Haití?", o:["Blanco","Rojo","Azul","Ninguno"], r:"Blanco"},
+  { p:"¿Cuál es la moneda oficial de la República Dominicana?", o:["Peso dominicano","Dólar estadounidense","Colón","Bolívar"], r:"Peso dominicano"},
+  { p:"¿Qué provincia es famosa por sus minas de larimar?", o:["Barahona","La Vega","Pedernales","San Cristóbal"], r:"Barahona"},
+
+  // Personajes y arte
+  { p:"¿Quién es un famoso cantautor dominicano reconocido internacionalmente?", o:["Juan Luis Guerra","Romeo Santos","Anthony Santos","Fernando Villalona"], r:"Juan Luis Guerra"},
+  { p:"¿Qué diseñador dominicano alcanzó fama mundial?", o:["Óscar de la Renta","Carlos de Moya","Jorge Diep","Giannina Azar"], r:"Óscar de la Renta"},
+  { p:"¿Quién fue Salomé Ureña?", o:["Poetisa y educadora","Política","Cantante","Pintora"], r:"Poetisa y educadora"},
+  { p:"¿Qué pintor dominicano es famoso por sus obras coloridas?", o:["Cándido Bidó","Iván Tovar","Guillo Pérez","Yoryi Morel"], r:"Cándido Bidó"},
+  { p:"¿Qué beisbolista dominicano es miembro del Salón de la Fama de MLB?", o:["Pedro Martínez","David Ortiz","Albert Pujols","Vladimir Guerrero"], r:"Pedro Martínez"},
+  { p:"¿Quién escribió 'Hay un país en el mundo'?", o:["Pedro Mir","Juan Bosch","Salomé Ureña","Manuel del Cabral"], r:"Pedro Mir"},
+  { p:"¿Qué artista es conocido como 'El Mayimbe' del merengue?", o:["Fernando Villalona","Sergio Vargas","Johnny Ventura","Wilfrido Vargas"], r:"Fernando Villalona"},
+  { p:"¿Quién es Romeo Santos en relación a RD?", o:["Cantante de bachata de origen dominicano","Presidente","Pintor","Pelotero"], r:"Cantante de bachata de origen dominicano"},
+  { p:"¿Qué escritor y político fundó el PLD?", o:["Juan Bosch","Peña Gómez","Balaguer","Leonel Fernández"], r:"Juan Bosch"},
+  { p:"¿Qué cantante popularizó 'Bachata Rosa'?", o:["Juan Luis Guerra","Anthony Santos","Luis Vargas","Zacarías Ferreira"], r:"Juan Luis Guerra"},
+
+  // Naturaleza, medio ambiente y turismo
+  { p:"¿En qué provincia está la Bahía de las Águilas?", o:["Pedernales","Barahona","La Altagracia","Monte Cristi"], r:"Pedernales"},
+  { p:"¿Qué isla pertenece a la RD?", o:["Isla Saona","Isla Mona","Isla de la Juventud","Isla Margarita"], r:"Isla Saona"},
+  { p:"¿Dónde está el salto de agua Salto Alto?", o:["Bayaguana","Jarabacoa","Constanza","Bonao"], r:"Bayaguana"},
+  { p:"¿Cuál es la flor nacional de la RD?", o:["Rosa de Bayahíbe","Orquídea","Flor de loto","Girasol"], r:"Rosa de Bayahíbe"},
+  { p:"¿Qué montaña es la segunda más alta de RD?", o:["Loma La Pelona","Pico Duarte","Loma Rucilla","Monte Isabel de Torres"], r:"Loma La Pelona"},
+  { p:"¿Dónde se encuentra el Parque Nacional Valle Nuevo?", o:["Constanza","Pedernales","Baní","Higüey"], r:"Constanza"},
+  { p:"¿Qué animal es símbolo nacional?", o:["Cigua Palmera","Gallo","Iguana rinoceronte","Cotorra"], r:"Cigua Palmera"},
+  { p:"¿En qué ciudad está el Faro a Colón?", o:["Santo Domingo","San Cristóbal","La Romana","Higüey"], r:"Santo Domingo"},
+  { p:"¿Qué playa es famosa en Samaná por el avistamiento de ballenas?", o:["Playa Rincón","Playa Cosón","Playa Bonita","Playa Cayo Levantado"], r:"Playa Cayo Levantado"},
+  { p:"¿En qué provincia está el Hoyo de Pelempito?", o:["Barahona","Pedernales","La Vega","Monte Plata"], r:"Pedernales"},
+
+  // Historia reciente y política
+  { p:"¿Quién fue el primer presidente democrático tras la dictadura de Trujillo?", o:["Juan Bosch","Balaguer","Guzmán","Salvador Jorge Blanco"], r:"Juan Bosch"},
+  { p:"¿En qué año fue asesinado Trujillo?", o:["1961","1956","1963","1970"], r:"1961"},
+  { p:"¿Qué partido político gobernó la mayor parte de 1996 a 2020?", o:["PLD","PRM","PRD","Revolucionario Social Cristiano"], r:"PLD"},
+  { p:"¿Quién fue presidente de 2000 a 2004?", o:["Hipólito Mejía","Leonel Fernández","Danilo Medina","Balaguer"], r:"Hipólito Mejía"},
+  { p:"¿Qué presidente dominicano también fue escritor reconocido?", o:["Juan Bosch","Balaguer","Peña Gómez","Danilo Medina"], r:"Juan Bosch"},
+  { p:"¿Qué líder político fue conocido como 'El Caudillo de Navarrete'?", o:["Peña Gómez","Balaguer","Hatuey De Camps","Rafael Abinader"], r:"Peña Gómez"},
+  { p:"¿En qué año se firmaron los Acuerdos de Paz de Santo Domingo para Centroamérica?", o:["1987","1989","1990","1985"], r:"1989"},
+  { p:"¿Quién fue la primera mujer vicepresidenta de la RD?", o:["Milagros Ortiz Bosch","Margarita Cedeño","Josefina Padilla","Raquel Peña"], r:"Milagros Ortiz Bosch"},
+  { p:"¿Qué año marcó la reforma constitucional para permitir la reelección inmediata?", o:["2015","2010","2002","1994"], r:"2015"},
+  { p:"¿Quién es el actual presidente de la RD (2025)?", o:["Luis Abinader","Danilo Medina","Leonel Fernández","Hipólito Mejía"], r:"Luis Abinader"}
+];
