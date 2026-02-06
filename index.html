@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desafío de la Sabiduría</title>
+<style>
+body { font-family: Arial, sans-serif; background: linear-gradient(135deg,#1070ec,#ACB6E5); display:flex; justify-content:center; align-items:center; height:100vh; margin:0; }
+.screen { background:#fff; padding:25px 30px; border-radius:20px; box-shadow:0 15px 25px rgba(0,0,0,0.2); width:95%; max-width:400px; text-align:center; display:none; }
+h1 { color:#333; font-size:24px; }
+.btn { padding:12px 25px; margin:8px; border:none; border-radius:12px; cursor:pointer; font-size:16px; transition:0.2s; }
+.btn:hover { transform:scale(1.05); }
+.start-btn { background:#4CAF50; color:white; }
+.module-btn { background:#343fdb; color:white; flex:1 1 40%; margin:10px; }
+.timer { font-size:18px; margin-bottom:5px; }
+#time-bar-container { width:100%; height:12px; background:#ddd; border-radius:6px; overflow:hidden; margin-bottom:10px; }
+#time-bar { height:100%; width:100%; background:green; transition:width 1s linear, background 0.5s; }
+.lives { margin-bottom:10px; font-size:20px; }
+.question { font-size:20px; margin:15px 0; color:#333; }
+.options { display:flex; flex-direction:column; }
+.options .option { margin:5px 0; background:#29b99aa6; color:white; border:none; padding:12px; border-radius:12px; cursor:pointer; transition:0.2s; }
+.options .option:hover { outline:3px solid #1853d1; }
+.controls { margin-top:15px; }
+.indicators { margin-top:15px; font-size:16px; color:#555; }
+@media (max-width:480px){ h1{font-size:20px;} .btn{font-size:14px;padding:10px 20px;} .question{font-size:18px;} .options .option{font-size:16px;padding:10px;} }
+</style>
+</head>
+<body>
+
+<!-- Pantalla de bienvenida -->
+<div class="screen" id="welcome-screen" style="display:block;">
+  <h1>Bienvenido al juego de adivinanzas <br>Desafío de la Sabiduría</h1>
+  <p>Por favor, ingresa tu nombre para comenzar:</p>
+  <input type="text" id="player-name" placeholder="Nombre" style="padding:10px; width:80%; border-radius:8px; border:1px solid #ccc; margin-bottom:10px;">
+  <br>
+  <button class="btn start-btn" id="start-btn">Comenzar</button>
+</div>
+
+<!-- Selección de módulo -->
+<div class="screen" id="module-screen">
+  <h1>Elige un módulo</h1>
+  <div style="display:flex; flex-wrap:wrap; justify-content:center;">
+    <button class="btn module-btn" data-module="Biblia">Biblia</button>
+    <button class="btn module-btn" data-module="Deporte">Deporte</button>
+    <button class="btn module-btn" data-module="Historia R.D.">Historia R.D.</button>
+    <button class="btn module-btn" data-module="Programación">Programación</button>
+    <button class="btn module-btn" data-module="Música">🎵 Música</button>
+    <button class="btn module-btn" data-module="Italiano">🇮🇹 Italiano</button>
+    <button class="btn module-btn" data-module="Inglés">🇬🇧 Inglés</button>
+    <button class="btn module-btn" data-module="Emprendimiento">💼 Emprendimiento</button>
+    <button class="btn module-btn" data-module="Conocimiento Universal">🌐 Conocimiento Universal</button>
+  </div>
+</div>
+
+<!-- Pantalla del juego -->
+<div class="screen" id="game-screen">
+  <div class="timer">⏱ Tiempo: <span id="time">25</span>s</div>
+  <div id="time-bar-container"><div id="time-bar"></div></div>
+  <div class="lives" id="lives">❤️ ❤️ ❤️ ❤️ ❤️</div>
+  <div class="question" id="question">Pregunta aparecerá aquí</div>
+  <div class="options">
+    <button class="option" id="option1"></button>
+    <button class="option" id="option2"></button>
+    <button class="option" id="option3"></button>
+    <button class="option" id="option4"></button>
+  </div>
+  <div class="controls">
+    <button class="btn" id="save">💾 Guardar progreso</button>
+    <button class="btn" id="exit">🚪 Salir del juego</button>
+    <button class="btn" id="change">🔄 Cambiar módulo</button>
+    <button class="btn" id="restart">🔄 Reiniciar preguntas</button>
+    <button class="btn" id="next-question" style="display:none;">➡ Siguiente</button>
+  </div>
+  <div class="indicators">
+    <p>Puntos: <span id="points">0</span> | Nivel: <span id="level">1</span></p>
+  </div>
+</div>
+
+<!-- Vinculación de módulos -->
+<script src="biblia.js"></script>
+<script src="preguntas_deporte.js"></script>
+<script src="historiaRD.js"></script>
+<script src="programacion.js"></script>
+<script src="musica.js"></script>
+<script src="italiano.js"></script>
+<script src="ingles.js"></script>
+<script src="emprendimiento.js"></script>
+<script src="conocimiento_universal.js"></script>
+
+<script>
+const welcomeScreen = document.getElementById("welcome-screen");
+const moduleScreen = document.getElementById("module-screen");
+const gameScreen = document.getElementById("game-screen");
+const startBtn = document.getElementById("start-btn");
+const moduleBtns = document.querySelectorAll(".module-btn");
+const questionEl = document.getElementById("question");
+const optionBtns = [document.getElementById("option1"), document.getElementById("option2"), document.getElementById("option3"), document.getElementById("option4")];
+const timeEl = document.getElementById("time");
+const timeBar = document.getElementById("time-bar");
+const livesEl = document.getElementById("lives");
+const pointsEl = document.getElementById("points");
+const levelEl = document.getElementById("level");
+const saveBtn = document.getElementById("save");
+const exitBtn = document.getElementById("exit");
+const changeBtn = document.getElementById("change");
+const restartBtn = document.getElementById("restart");
+const nextBtn = document.getElementById("next-question");
+
+let modules = {
+  "Biblia": preguntasBiblia,
+  "Deporte": preguntasDeporte,
+  "Historia R.D.": preguntasHistoriaRD,
+  "Programación": preguntasProgramacion,
+  "Música": preguntasMusica,
+  "Italiano": preguntasItaliano,
+  "Inglés": preguntasIngles,
+  "Emprendimiento": preguntasEmprendimiento,
+  "Conocimiento Universal": preguntasConocimientoUniversal
+};
+
+let currentModule = "";
+let questions = [];
+let currentIndex = 0;
+let points = 0;
+let level = 1;
+let lives = 5;
+let maxLives = 5;
+let timer;
+let timeLeft = 20;
+let totalTime = 20;
+let playerName = "";
+
+// 🔊 Función de voz robótica
+function speak(text){
+  if('speechSynthesis' in window){
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "es-ES";
+    window.speechSynthesis.speak(utterance);
+  }
+}
+
+// 🎵 Sonidos
+let correctSound = new Audio('https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg');
+let wrongSound = new Audio('https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg');
+
+// Funciones de pantalla
+function showScreen(screen){
+  welcomeScreen.style.display="none";
+  moduleScreen.style.display="none";
+  gameScreen.style.display="none";
+  screen.style.display="block";
+}
+
+// 🔹 Guardar progreso
+function guardarProgreso(){
+  localStorage.setItem("progreso_" + playerName, JSON.stringify({
+    module: currentModule,
+    idx: currentIndex,
+    points: points,
+    lives: lives,
+    level: level
+  }));
+  alert("Progreso guardado ✅");
+}
+
+// Juego
+function initGame(moduleName){
+  currentModule = moduleName;
+  questions = [...modules[moduleName]];
+  currentIndex = 0;
+  points = 0;
+  level = 1;
+  lives = maxLives;
+  showScreen(gameScreen);
+  showQuestion();
+}
+
+// 🔹 Actualizar indicadores
+function updateIndicators(){
+  let totalQuestions = questions.length;
+  let questionsAnswered = currentIndex;
+  level = Math.floor((questionsAnswered / totalQuestions) * 5) + 1;
+
+  pointsEl.innerText = points;
+  levelEl.innerText = level;
+  livesEl.innerText="❤️".repeat(lives)+"🤍".repeat(maxLives-lives);
+
+  if(lives<=0){
+    alert("¡Se acabaron tus vidas! El juego se reinicia");
+    showScreen(moduleScreen);
+  }
+}
+
+function shuffleArray(arr){ return arr.sort(()=>Math.random()-0.5); }
+
+function showQuestion(){
+  if(currentIndex >= questions.length){
+    alert("¡Has terminado el módulo "+currentModule+"! Puntos: "+points);
+    showScreen(moduleScreen);
+    return;
+  }
+  let q = questions[currentIndex];
+  q.opciones = shuffleArray(q.opciones);
+
+  questionEl.innerText = q.pregunta;
+  speak(q.pregunta + ". Opciones: " + q.opciones.join(", "));
+
+  optionBtns.forEach((btn,i)=>{
+    btn.innerText = q.opciones[i];
+    btn.disabled = false;
+    btn.style.backgroundColor = "#2980b9";
+    btn.style.color = "white";
+    btn.onclick = ()=>checkAnswer(btn,q.respuesta);
+  });
+
+  timeLeft = totalTime;
+  timeEl.innerText = timeLeft;
+  updateTimeBar();
+  clearInterval(timer);
+  timer = setInterval(()=>{
+    timeLeft--;
+    timeEl.innerText = timeLeft;
+    updateTimeBar();
+    if(timeLeft<=0){ clearInterval(timer); markWrong(); }
+  },1000);
+}
+
+function checkAnswer(btn, correct){
+  clearInterval(timer);
+  optionBtns.forEach(b => b.disabled = true);
+
+  if(btn.innerText === correct){
+    points += 10;
+    if(lives < maxLives) lives++;
+    correctSound.play();
+  } else {
+    lives--;
+    btn.style.backgroundColor = "red";
+    wrongSound.play();
+  }
+
+  optionBtns.forEach(b => { 
+    if(b.innerText === correct){ 
+      b.style.backgroundColor = "green"; 
+      b.style.color = "white"; 
+    } 
+  });
+
+  updateIndicators();
+
+  // 🔹 Mostrar el botón siguiente, ya no pasa automáticamente
+  nextBtn.style.display = "inline-block";
+}
+
+function markWrong(){
+  lives--;
+  wrongSound.play();
+  updateIndicators();
+  // Mostrar botón siguiente si se acaba el tiempo
+  nextBtn.style.display = "inline-block";
+}
+
+// 🔹 Evento del botón “Siguiente”
+nextBtn.addEventListener("click", ()=>{
+  currentIndex++;
+  nextBtn.style.display = "none";
+  showQuestion();
+});
+
+function updateTimeBar(){
+  let percent = (timeLeft/totalTime)*100;
+  timeBar.style.width = percent+"%";
+  if(timeLeft>15) timeBar.style.background="green";
+  else if(timeLeft>5) timeBar.style.background="orange";
+  else timeBar.style.background="red";
+}
+
+// Eventos
+moduleBtns.forEach(btn=>{ btn.addEventListener("click",()=>{ initGame(btn.dataset.module); }); });
+changeBtn.addEventListener("click",()=>showScreen(moduleScreen));
+restartBtn.addEventListener("click",()=>{
+  if(confirm("¿Quieres reiniciar las preguntas de este módulo?")){
+    currentIndex = 0;
+    questions = shuffleArray([...modules[currentModule]]);
+    showQuestion();
+  }
+});
+
+saveBtn.addEventListener("click",()=>guardarProgreso());
+exitBtn.addEventListener("click",()=>{
+  guardarProgreso();
+  alert("Gracias por jugar!");
+  location.reload();
+});
+
+// 🔹 Start
+startBtn.addEventListener("click", ()=>{
+  const input = document.getElementById("player-name").value.trim();
+  if(!input){ alert("Debes ingresar tu nombre."); return; }
+  playerName = input;
+
+  showScreen(moduleScreen); // Siempre mostrar pantalla de módulos
+
+  let saved = localStorage.getItem("progreso_" + playerName);
+  if(saved){
+    let data = JSON.parse(saved);
+    if(confirm(`¡Bienvenido de nuevo ${playerName}! ¿Deseas continuar tu progreso en "${data.module}"?`)){
+      currentModule = data.module;
+      currentIndex = data.idx;
+      points = data.points;
+      lives = data.lives;
+      level = data.level || 1;
+      questions = [...modules[currentModule]];
+      updateIndicators();
+      showScreen(gameScreen);
+      showQuestion();
+    }
+  }
+});
+</script>
+</body>
+</html>
